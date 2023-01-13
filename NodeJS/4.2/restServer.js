@@ -1,16 +1,19 @@
 const http = require('http');
 const fs =require('fs').promises;
+const path = require('path');
+
+const users = {}; // 데이터 저장용
 
 http.createServer(async (req, res) => {
     try{
         console.log(req.method, req.url);
         if (req.method === 'GET') {
             if (req.url == '/') {
-                const data = await fs.readFile('./NodeJs/4.2/restFront.html');
+                const data =  await fs.readFile(path.join(__dirname, 'restFront.html'));
                 res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'});
                 return res.end(data);
             } else if (req.url === '/about') {
-                const data = await fs.readFile('./NodeJs/4.2/about.html');
+                const data =await fs.readFile(path.join(__dirname,'about.html'));
                 res.writeHead(200, {'Content-Type' : 'text/html; charset=utf-8'});
                 return res.end(data);
             } else if (req.url == '/users') {
@@ -19,7 +22,7 @@ http.createServer(async (req, res) => {
             }
 
             try {
-                const data = await fs.readFile(`.${req.url}`);
+                const data = await fs.readFile(path.join(__dirname, req.url));
                 return res.end(data);
             } catch (err) {
 
@@ -54,7 +57,7 @@ http.createServer(async (req, res) => {
             }
         } else if (req.method === 'DELETE') {
             if (req.url.startsWith('/user/')) {
-                const key = req.url.split['/'][2];
+                const key = req.url.split('/')[2];
                 delete users[key];
                 return res.end(JSON.stringify(users));
             }
