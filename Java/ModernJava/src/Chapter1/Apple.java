@@ -1,3 +1,5 @@
+package Chapter1;
+
 public class Apple {
     public String getColor() {
         return color;
