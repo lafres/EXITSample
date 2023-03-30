@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src = "https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src ="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script>
+        const root = document.getElementById("root")
+        const h3 = React.createElement(
+            "h3",
+            { 
+                id : "sexy-title",  
+                style : {color : "red"} , 
+                onMouseEnter: ()=> console.log("mouse enter")
+            },
+             "Hello I'm a title"
+        );
+        const btn = React.createElement(
+            "button",
+            {
+                onClick: () => console.log("im clicked"),
+                style : { backgroundColor : "orange" }
+            }, 
+            "Click me"
+        );
+        const container = React.createElement("div", null, [h3, btn])
+        ReactDOM.render(container, root);
+        
+
+    </script>
+    </html>
