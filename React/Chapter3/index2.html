@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src = "https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src ="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src ="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root")
+    
+        function App ()  {
+            const [amount, setAmount] = React.useState();
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            };
+            const rest = () => setAmount(0);
+            const onFlip = () => {
+                rest();
+                setFlipped( (current) => !current);
+            };
+            return (
+                <div>
+                    <div>
+                        <h1 className = "hi">Super Converter</h1>
+                        <label htmlFor="minutes"> Minutes</label>
+                        <input 
+                            value = { flipped ? amount * 60 : amount} 
+                            id = "minutes" 
+                            placeholder="Minutes"
+                            type="number"
+                            onChange={onChange}
+                            disabled = {flipped == true}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="hours">Hours</label>
+                        <input 
+                            value = { flipped ? amount : Math.round(amount/60)} 
+                            id = "hours" 
+                            placeholder="Hours"
+                            type = "number"
+                            onChange={onChange}
+                            disabled = {flipped == false}
+                        />
+                    </div>
+                    <button onClick={rest} >Reset</button>
+                    <button onClick={onFlip} >{flipped? "Turn Back" : "invert True"}</button>
+                </div>
+            );
+        };
+        ReactDOM.render(<App/ >, root);
+    </script>
+    </html>
