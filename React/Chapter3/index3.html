@@ -67,7 +67,7 @@
                     <div>
                         <label htmlFor="Km"> Km</label>
                         <input 
-                            value= { isKm ? val : Math.round(val/1.609)} 
+                            value= { isKm ? val*1.609 : val} 
                             id = "km" 
                             placeholder="Km"
                             type="number"
@@ -78,7 +78,7 @@
                     <div>
                         <label htmlFor="Miles">Miles</label>
                         <input 
-                            value = { isKm ? val*1.609 : val} 
+                            value = { isKm ? val : val/1.609} 
                             id = "miles" 
                             placeholder="Miles"
                             type = "number"
