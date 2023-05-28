@@ -1,34 +1,41 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
-
+const LocalStrategy = require("passport-local").Strategy;
 const userController = require("./controllers/userController");
-const passportConfig = require("./passport");
 
 const app = express();
-
-// 미들웨어 설정
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// 루트 경로
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
-
-// 유저 조회 API
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
   })
 );
-app.get("/user", userController.getUsers);
-app.get("/user/:id", userController.getUser);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new LocalStrategy(
+    { usernameField: "userId", passwordField: "password" },
+    userController.authenticateUser
+  )
+);
+
+passport.serializeUser(userController.serializeUser);
+passport.deserializeUser(userController.deserializeUser);
+app.user;
+// 루트 경로
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/login.html");
+});
+app.post("/login", passport.authenticate("local"), userController.login);
+
+// 로그아웃 API
+app.get("/logout", userController.logout);
 
 // 서버 시작
 app.listen(3000, () => {
